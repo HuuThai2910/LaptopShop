@@ -55,4 +55,5 @@ public class Product {
     private long sold;
     private String factory;
     private String target;
+
 }

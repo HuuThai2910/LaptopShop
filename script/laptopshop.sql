@@ -67,4 +67,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 -- Dump completed on 2024-03-22 12:37:00
 
-DELETE FROM users WHERE users.id = 4 or users.id = 5 or users.id = 7;
+DELETE FROM carts WHERE carts.id = 1;

@@ -42,6 +42,11 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 }
