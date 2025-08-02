@@ -4,7 +4,10 @@
  */
 package com.example.LaptopShop.controller.client;
 
+import com.example.LaptopShop.domain.Cart;
+import com.example.LaptopShop.domain.CartDetail;
 import com.example.LaptopShop.domain.Product;
+import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 /*
  * @description
@@ -37,7 +42,23 @@ public class ItemController {
         HttpSession session = request.getSession(false);
         long productId = id;
         String email = (String) session.getAttribute("email");
-        this.productService.handleAddProduct(email, productId);
+        this.productService.handleAddProduct(email, productId, session);
         return "redirect:/";
+    }
+    @GetMapping("/cart")
+    public String getCartPage(Model model, HttpServletRequest request){
+        User currentUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long)session.getAttribute("id");
+        currentUser.setId(id);
+        Cart cart = this.productService.getCartByUser(currentUser);
+        List<CartDetail> cartDetails = cart.getCartDetails();
+        double totalPrice = 0;
+        for(CartDetail cd : cartDetails){
+            totalPrice += cd.getPrice() * cd.getQuantity();
+        }
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+        return "client/cart/show";
     }
 }
