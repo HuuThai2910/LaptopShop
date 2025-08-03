@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -52,7 +53,7 @@ public class ItemController {
         long id = (long)session.getAttribute("id");
         currentUser.setId(id);
         Cart cart = this.productService.getCartByUser(currentUser);
-        List<CartDetail> cartDetails = cart.getCartDetails();
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         double totalPrice = 0;
         for(CartDetail cd : cartDetails){
             totalPrice += cd.getPrice() * cd.getQuantity();
