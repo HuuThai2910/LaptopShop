@@ -16,6 +16,7 @@ import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -46,6 +47,13 @@ public class ItemController {
         this.productService.handleAddProduct(email, productId, session);
         return "redirect:/";
     }
+    @PostMapping("/remove-cartDetail-from-cart/{id}")
+    public String removeProductFromCart(@PathVariable long id, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        long cartDetailId = id;
+        this.productService.removeCartDetailFromCart(cartDetailId, session);
+        return "redirect:/cart";
+    }
     @GetMapping("/cart")
     public String getCartPage(Model model, HttpServletRequest request){
         User currentUser = new User();
@@ -60,6 +68,17 @@ public class ItemController {
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
         return "client/cart/show";
+    }
+    @GetMapping("/checkout")
+    public String getCheckoutPage(){
+        return "client/checkout/show";
+    }
+    @PostMapping("/confirm-checkout")
+    public String getCheckoutPage(@ModelAttribute("cart") Cart cart){
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
+        this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+        return "redirect:/checkout";
     }
 }

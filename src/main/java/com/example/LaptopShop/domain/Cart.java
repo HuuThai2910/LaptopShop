@@ -38,6 +38,6 @@ public class Cart {
     private User user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartDetail> cartDetails;
 }
