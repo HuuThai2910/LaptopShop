@@ -171,19 +171,17 @@
                                     <div class="form-group">
                                         <label>Id: </label>
                                         <form:input class="form-control" type="text"
-                                                    value="${cartDetail.id}"
                                                     path="cartDetails[${status.index}].id" />
                                     </div>
                                     <div class="form-group">
                                         <label>Quantity: </label>
                                         <form:input class="form-control" type="text"
-                                                    value="${cartDetail.quantity}"
                                                     path="cartDetails[${status.index}].quantity" />
                                     </div>
                                 </div>
                             </c:forEach>
                         </div>
-                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">Proceed Checkout</button>
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Proceed Checkout</button>
                     </form:form>
 
                 </div>

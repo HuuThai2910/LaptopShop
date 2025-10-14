@@ -36,6 +36,11 @@ public class Order {
 
     private Double totalPrice;
 
+    private String receiverName;
+    private String receiverAddress;
+    private String receiverPhone;
+    private String status;
+
     @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "user_id")

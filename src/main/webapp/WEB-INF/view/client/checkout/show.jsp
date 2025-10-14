@@ -44,208 +44,139 @@
 <jsp:include page="../layout/header.jsp"/>
 <!-- Single Product Start -->
 <!-- Cart Page Start -->
-<!-- Checkout Page Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
-        <h1 class="mb-4">Billing details</h1>
-        <form action="#">
-            <div class="row g-5">
-                <div class="col-md-12 col-lg-6 col-xl-7">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-6">
-                            <div class="form-item w-100">
-                                <label class="form-label my-3">First Name<sup>*</sup></label>
-                                <input type="text" class="form-control">
+        <div class="mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Chi Tiết Giỏ Hàng</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Products</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <c:if test="${empty cartDetails}">
+                    <tr>
+                        <td colspan="6" class="text-center">Không có đơn hàng nào trong giỏ.</td>
+                    </tr>
+                </c:if>
+                <c:forEach var="cartDetail" items="${cartDetails}" varStatus="status">
+                    <tr>
+                        <th scope="row">
+                            <div class="d-flex align-items-center">
+                                <img src="/images/product/${cartDetail.product.image}" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
                             </div>
-                        </div>
-                        <div class="col-md-12 col-lg-6">
-                            <div class="form-item w-100">
-                                <label class="form-label my-3">Last Name<sup>*</sup></label>
-                                <input type="text" class="form-control">
+                        </th>
+                        <td>
+                            <p class="mb-0 mt-4">
+                                <a href="/product/${cartDetail.product.id}">
+                                        ${cartDetail.product.name}
+                                </a>
+                            </p>
+                        </td>
+                        <td>
+                            <p class="mb-0 mt-4">
+                                <fmt:formatNumber type="number" value="${cartDetail.product.price}"/>đ
+                            </p>
+                        </td>
+                        <td>
+                            <div class="input-group quantity mt-4" style="width: 100px;">
+
+                                <input type="text" class="form-control form-control-sm text-center border-0"
+                                       value="${cartDetail.quantity}"
+                                       data-cart-detail-id = "${cartDetail.id}"
+                                       data-cart-detail-price = "${cartDetail.price}"
+                                       data-cart-detail-index = "${status.index}"/>
+
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Company Name<sup>*</sup></label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Address <sup>*</sup></label>
-                        <input type="text" class="form-control" placeholder="House Number Street Name">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Town/City<sup>*</sup></label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Country<sup>*</sup></label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Mobile<sup>*</sup></label>
-                        <input type="tel" class="form-control">
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label my-3">Email Address<sup>*</sup></label>
-                        <input type="email" class="form-control">
-                    </div>
-                    <div class="form-check my-3">
-                        <input type="checkbox" class="form-check-input" id="Account-1" name="Accounts" value="Accounts">
-                        <label class="form-check-label" for="Account-1">Create an account?</label>
-                    </div>
-                    <hr>
-                    <div class="form-check my-3">
-                        <input class="form-check-input" type="checkbox" id="Address-1" name="Address" value="Address">
-                        <label class="form-check-label" for="Address-1">Ship to a different address?</label>
-                    </div>
-                    <div class="form-item">
-                        <textarea name="text" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="Oreder Notes (Optional)"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xl-5">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Products</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center mt-2">
-                                        <img src="img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                    </div>
-                                </th>
-                                <td class="py-5">Awesome Brocoli</td>
-                                <td class="py-5">$69.00</td>
-                                <td class="py-5">2</td>
-                                <td class="py-5">$138.00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center mt-2">
-                                        <img src="img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                    </div>
-                                </th>
-                                <td class="py-5">Potatoes</td>
-                                <td class="py-5">$69.00</td>
-                                <td class="py-5">2</td>
-                                <td class="py-5">$138.00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center mt-2">
-                                        <img src="img/vegetable-item-3.png" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                    </div>
-                                </th>
-                                <td class="py-5">Big Banana</td>
-                                <td class="py-5">$69.00</td>
-                                <td class="py-5">2</td>
-                                <td class="py-5">$138.00</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                </th>
-                                <td class="py-5"></td>
-                                <td class="py-5"></td>
-                                <td class="py-5">
-                                    <p class="mb-0 text-dark py-3">Subtotal</p>
-                                </td>
-                                <td class="py-5">
-                                    <div class="py-3 border-bottom border-top">
-                                        <p class="mb-0 text-dark">$414.00</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                </th>
-                                <td class="py-5">
-                                    <p class="mb-0 text-dark py-4">Shipping</p>
-                                </td>
-                                <td colspan="3" class="py-5">
-                                    <div class="form-check text-start">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-1" name="Shipping-1" value="Shipping">
-                                        <label class="form-check-label" for="Shipping-1">Free Shipping</label>
-                                    </div>
-                                    <div class="form-check text-start">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-2" name="Shipping-1" value="Shipping">
-                                        <label class="form-check-label" for="Shipping-2">Flat rate: $15.00</label>
-                                    </div>
-                                    <div class="form-check text-start">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Shipping-3" name="Shipping-1" value="Shipping">
-                                        <label class="form-check-label" for="Shipping-3">Local Pickup: $8.00</label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                </th>
-                                <td class="py-5">
-                                    <p class="mb-0 text-dark text-uppercase py-3">TOTAL</p>
-                                </td>
-                                <td class="py-5"></td>
-                                <td class="py-5"></td>
-                                <td class="py-5">
-                                    <div class="py-3 border-bottom border-top">
-                                        <p class="mb-0 text-dark">$135.00</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                        <div class="col-12">
-                            <div class="form-check text-start my-3">
-                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Transfer-1" name="Transfer" value="Transfer">
-                                <label class="form-check-label" for="Transfer-1">Direct Bank Transfer</label>
-                            </div>
-                            <p class="text-start text-dark">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
-                        </div>
-                    </div>
-                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                        <div class="col-12">
-                            <div class="form-check text-start my-3">
-                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1" name="Payments" value="Payments">
-                                <label class="form-check-label" for="Payments-1">Check Payments</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                        <div class="col-12">
-                            <div class="form-check text-start my-3">
-                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1" name="Delivery" value="Delivery">
-                                <label class="form-check-label" for="Delivery-1">Cash On Delivery</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                        <div class="col-12">
-                            <div class="form-check text-start my-3">
-                                <input type="checkbox" class="form-check-input bg-primary border-0" id="Paypal-1" name="Paypal" value="Paypal">
-                                <label class="form-check-label" for="Paypal-1">Paypal</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                        <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+                        </td>
+                        <td>
+                            <p class="mb-0 mt-4" data-cart-detail-id = "${cartDetail.id}">
+                                <fmt:formatNumber type="number"
+                                                  value="${cartDetail.price * cartDetail.quantity}"/>đ
+                            </p>
+                        </td>
+
+
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+
+       <form:form action= "/place-order" method="post" modelAttribute="cart">
+           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+           <div class="row g-4 justify-content-end mt-5">
+               <div class="col-8">
+                   <h5>Thông tin người nhận</h5>
+                   <div class="row">
+                       <div class="col-12 form-group mb-3">
+                           <label>Tên người nhận</label>
+                           <input class="form-control" name="receiverName" required />
+                       </div>
+                       <div class="col-12 form-group mb-3">
+                           <label>Địa chỉ người nhận</label>
+                           <input class="form-control" name="receiverAddress" required/>
+                       </div>
+                       <div class="col-12 form-group mb-3">
+                           <label>Số điện thoại</label>
+                           <input class="form-control" name="receiverPhone" required/>
+                       </div>
+                       <div class="mt-4">
+                           <i class="fas fa-arrow-left"></i>
+                           <a href="/cart">Quay lại gió hàng</a>
+                       </div>
+                   </div>
+               </div>
+               <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                   <div class="bg-light rounded">
+                       <div class="p-4">
+                           <h2 class="mb-4">Thông tin thanh toán</h2>
+                           <div class="d-flex justify-content-between mb-4">
+                               <h5 class="mb-0 me-4">Hình thức</h5>
+                               <p class="mb-0" >
+                                  Thanh toán khi nhận hàng
+                               </p>
+                           </div>
+                           <div class="d-flex justify-content-between">
+                               <h5 class="mb-0 me-4">Phí vận chuyển</h5>
+                               <div class="">
+                                   <p class="mb-0">0 đ</p>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                           <h5 class="mb-0 ps-4 me-4">Tổng số tiền</h5>
+                           <p class="mb-0 pe-04" data-cart-total-price = "${totalPrice}">
+                               <fmt:formatNumber type="number" value="${totalPrice}"/>đ
+                           </p>
+                       </div>
+                       <form:form action="/place-order" method="post" modelAttribute="cart">
+                           <input type="hidden" name="${_csrf.parameterName}"
+                                  value="${_csrf.token}" />
+                           <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Xác nhận thanh toán</button>
+                       </form:form>
+
+                   </div>
+               </div>
+           </div>
+       </form:form>
     </div>
 </div>
-<!-- Checkout Page End -->
+<!-- Cart Page End -->
+</div>
 <!-- Single Product End -->
 <jsp:include page="../layout/footer.jsp"/>
 
@@ -286,4 +217,3 @@
 </body>
 
 </html>
-

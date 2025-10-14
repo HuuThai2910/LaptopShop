@@ -15,10 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,13 +69,42 @@ public class ItemController {
         return "client/cart/show";
     }
     @GetMapping("/checkout")
-    public String getCheckoutPage(){
+    public String getCheckoutPage(Model model, HttpServletRequest request){
+        User currentUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long)session.getAttribute("id");
+        currentUser.setId(id);
+        Cart cart = this.productService.getCartByUser(currentUser);
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
+        double totalPrice = 0;
+        for(CartDetail cd : cartDetails){
+            totalPrice += cd.getPrice() * cd.getQuantity();
+        }
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
         return "client/checkout/show";
     }
     @PostMapping("/confirm-checkout")
-    public String getCheckoutPage(@ModelAttribute("cart") Cart cart){
+    public String getCheckoutPage(@ModelAttribute("cart") Cart cart, Model model){
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         this.productService.handleUpdateCartBeforeCheckout(cartDetails);
         return "redirect:/checkout";
+
     }
+    @PostMapping("/place-order")
+    public String handlePlaceOrder(HttpServletRequest request,
+                                   @RequestParam("receiverName") String receiverName,
+                                   @RequestParam("receiverAddress") String receiverAddress,
+                                   @RequestParam("receiverPhone") String receiverPhone){
+        User currentUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long)session.getAttribute("id");
+        currentUser.setId(id);
+
+        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
+
+        return "client/checkout/thank";
+    }
+
 }
