@@ -7,6 +7,8 @@ package com.example.LaptopShop.service;
 import com.example.LaptopShop.domain.Role;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.RegisterDTO;
+import com.example.LaptopShop.repository.OrderRepository;
+import com.example.LaptopShop.repository.ProductRepository;
 import com.example.LaptopShop.repository.RoleRepository;
 import com.example.LaptopShop.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,9 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+
     public String handleHello(){
         return "Hello from service";
     }
@@ -58,5 +63,17 @@ public class UserService {
     }
     public User getUserByEmail(String email){
         return this.userRepository.findByEmail(email);
+    }
+
+    public long countUsers() {
+        return this.userRepository.count();
+    }
+
+    public long countProducts() {
+        return this.productRepository.count();
+    }
+
+    public long countOrders() {
+        return this.orderRepository.count();
     }
 }
