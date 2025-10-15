@@ -10,5 +10,6 @@
 </head>
 <body>
 Đặt hàng thành công. Cảm ơn đã mua hàng
+<a href="/">Trang chu</a>
 </body>
 </html>

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -105,23 +106,29 @@ public class ProductService {
 
     }
 
-    public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress, String receiverPhone) {
-//        Create order
-        Order order = new Order();
-        System.out.println(user);
-        order.setUser(user);
-        order.setOrderDate(LocalDate.now());
-        order.setReceiverName(receiverName);
-        order.setReceiverPhone(receiverPhone);
-        order.setReceiverAddress(receiverAddress);
-        order = this.orderRepository.save(order);
 
+    @Transactional
+    public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress, String receiverPhone) {
 //        Create order detail
 //        Step 1: get cart by user
         Cart cart = this.cartRepository.findByUser(user);
         if(cart != null){
             List<CartDetail> cartDetails = cart.getCartDetails();
             if(cartDetails != null){
+                //        Create order
+                Order order = new Order();
+                order.setUser(user);
+                order.setStatus("PENDING");
+                order.setOrderDate(LocalDate.now());
+                order.setReceiverName(receiverName);
+                order.setReceiverPhone(receiverPhone);
+                order.setReceiverAddress(receiverAddress);
+                double sum  = 0;
+                for(CartDetail cd : cartDetails){
+                    sum += cd.getPrice();
+                }
+                order.setTotalPrice(sum);
+                order = this.orderRepository.save(order);
                 for(CartDetail cd : cartDetails){
                     OrderDetail orderDetail = new OrderDetail();
                     orderDetail.setOrder(order);
@@ -132,14 +139,11 @@ public class ProductService {
                 }
             }
 //            Step 2: delete cart_detail and cart
-            for(CartDetail cd : cartDetails){
-                this.cartDetailRepository.deleteById(cd.getId());
-            }
-           cart.setSum(0);
-            this.cartRepository.save(cart);
+
+            cart.getCartDetails().clear();
+            cartRepository.delete(cart);
 //            Step 3: update session
             session.setAttribute("sum", 0);
         }
-
     }
 }

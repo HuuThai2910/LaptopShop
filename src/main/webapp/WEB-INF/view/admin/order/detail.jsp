@@ -1,7 +1,6 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,42 +23,41 @@
                 <h1 class="mt-4">Management Orders</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Orders</li>
+                    <li class="breadcrumb-item active">Order</li>
                 </ol>
                 <div class="mt-5">
                     <div class="row">
                         <div class="col-12 mx-auto">
                             <div class="d-flex justify-content-between">
-                                <h3>Table Orders</h3>
+                                <h3>Order detail # ${id}</h3>
                             </div>
                             <hr />
                             <table class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
                                     <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="order" items="${orders}">
+                                <c:forEach var="orderDetail" items="${order.orderDetails}">
                                     <tr>
-                                        <td>${order.id}</td>
-                                        <td>${order.user.fullName}</td>
+                                        <td><img src="/images/product/${orderDetail.product.image}" style="width: 100px; height: 100px"></td>
+                                        <td>${orderDetail.product.name}</td>
                                         <td>  <fmt:formatNumber type="number"
-                                                                value="${order.totalPrice}"/>đ</td>
-                                        <td>${order.status}</td>
-                                        <td>
-                                            <a href="/admin/order/${order.id}" class="btn btn-success">View</a>
-                                            <a href="/admin/order/update/${order.id}" class="btn btn-warning mx-2">Update</a>
-                                            <a href="/admin/order/delete/${order.id}" class="btn btn-danger">Delete</a>
-                                        </td>
+                                                                value="${orderDetail.price}"/>đ</td>
+                                        <td>${orderDetail.quantity}</td>
+                                        <td>  <fmt:formatNumber type="number"
+                                                               value="${orderDetail.quantity * orderDetail.price}"/>đ</td>
+
                                     </tr>
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <a href="/admin/order" class="btn btn-success mt-3">Back</a>
                         </div>
                     </div>
                 </div>
@@ -72,3 +70,5 @@
 <script src="/js/scripts.js"></script>
 </body>
 </html>
+
+

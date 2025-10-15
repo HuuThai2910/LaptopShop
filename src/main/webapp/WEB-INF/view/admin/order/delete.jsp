@@ -1,7 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,43 +22,26 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Management Orders</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Orders</li>
+                    <li class="breadcrumb-item"><a href="/admin/product">Orders</a></li>
+                    <li class="breadcrumb-item active">Delete order</li>
                 </ol>
                 <div class="mt-5">
                     <div class="row">
                         <div class="col-12 mx-auto">
                             <div class="d-flex justify-content-between">
-                                <h3>Table Orders</h3>
+                                <h3>Delete order with id = ${order.id}</h3>
                             </div>
                             <hr />
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Total Price</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="order" items="${orders}">
-                                    <tr>
-                                        <td>${order.id}</td>
-                                        <td>${order.user.fullName}</td>
-                                        <td>  <fmt:formatNumber type="number"
-                                                                value="${order.totalPrice}"/>đ</td>
-                                        <td>${order.status}</td>
-                                        <td>
-                                            <a href="/admin/order/${order.id}" class="btn btn-success">View</a>
-                                            <a href="/admin/order/update/${order.id}" class="btn btn-warning mx-2">Update</a>
-                                            <a href="/admin/order/delete/${order.id}" class="btn btn-danger">Delete</a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+                            <div class="alert alert-danger">
+                                Are you sure to delete this order ?
+                            </div>
+                            <form:form method="post" action = "/admin/order/delete" modelAttribute="order">
+                                <div class="mb-3" style="display: none">
+                                    <label class="form-label">Id:</label>
+                                    <form:input  type="text" class="form-control" path="id"/>
+                                </div>
+                                <button class="btn btn-danger">Confirm</button>
+                            </form:form>
                         </div>
                     </div>
                 </div>
@@ -72,3 +54,5 @@
 <script src="/js/scripts.js"></script>
 </body>
 </html>
+
+
