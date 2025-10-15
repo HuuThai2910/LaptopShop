@@ -4,9 +4,11 @@
  */
 package com.example.LaptopShop.controller.client;
 
+import com.example.LaptopShop.domain.Order;
 import com.example.LaptopShop.domain.Product;
 import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.domain.dto.RegisterDTO;
+import com.example.LaptopShop.service.OrderService;
 import com.example.LaptopShop.service.ProductService;
 import com.example.LaptopShop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +37,7 @@ public class HomePageController {
     private final ProductService productService;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final OrderService orderService;
     @GetMapping("/")
     public String getHomePage(Model model){
         List<Product> products = this.productService.getAllProducts();
@@ -67,6 +70,16 @@ public class HomePageController {
     @GetMapping("/access-deny")
     public String getDenyPage(Model model){
         return "client/auth/deny";
+    }
+    @GetMapping("/order-history")
+    public String getOrderHistory(Model model, HttpServletRequest request){
+        User currentUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+        List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
+        model.addAttribute("orders", orders);
+        return "client/cart/order-history";
     }
 
 }

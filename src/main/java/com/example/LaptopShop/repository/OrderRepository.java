@@ -5,7 +5,10 @@
 package com.example.LaptopShop.repository;
 
 import com.example.LaptopShop.domain.Order;
+import com.example.LaptopShop.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /*
  * @description
@@ -14,4 +17,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version: 1.0
  */
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    List<Order> findByUser(User user);
 }

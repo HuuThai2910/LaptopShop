@@ -5,6 +5,7 @@
 package com.example.LaptopShop.service;
 
 import com.example.LaptopShop.domain.Order;
+import com.example.LaptopShop.domain.User;
 import com.example.LaptopShop.repository.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.aspectj.weaver.ast.Or;
@@ -40,5 +41,9 @@ public class OrderService {
     }
     public Order handleSave(Order order){
         return orderRepository.save(order);
+    }
+
+    public List<Order> fetchOrderByUser(User currentUser) {
+        return this.orderRepository.findByUser(currentUser);
     }
 }
